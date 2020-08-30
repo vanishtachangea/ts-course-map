@@ -6,7 +6,8 @@ interface Mappable{
     location:{
         lat:number;
         lng:number;
-    }
+    };
+    markerContent():string;
 }
 
 export class CustomMap {
@@ -21,31 +22,20 @@ export class CustomMap {
         });
     }
     addMarker(mappable:Mappable):void{
-        new google.maps.Marker({
+        const marker = new google.maps.Marker({
             map:this.googleMap,
             position:{
                 lat:mappable.location.lat,
                 lng:mappable.location.lng
             }
+        })
+        marker.addListener('click',()=>{
+            const infoWindow = new google.maps.InfoWindow({
+                content:mappable.markerContent()
+            });
+            infoWindow.open(this.googleMap,marker);
         })
     }
-/*     addMarker(mappable:User | Company):void{
-        new google.maps.Marker({
-            map:this.googleMap,
-            position:{
-                lat:mappable.location.lat,
-                lng:mappable.location.lng
-            }
-        })
-    } */
-/*     addCompanyMarker(company:Company):void{
-        new google.maps.Marker({
-            map:this.googleMap,
-            position:{
-                lat:company.location.lat,
-                lng:company.location.lng
-            }
-        })
-    } */
+
 
 }
